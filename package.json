@@ -23,6 +23,7 @@
     "eslint": "^8.35.0",
     "husky": "^8.0.0",
     "lint-staged": "^13.1.2",
-    "prettier": "^2.8.4"
+    "prettier": "^2.8.4",
+    "sequelize-cli": "^6.6.0"
   }
 }

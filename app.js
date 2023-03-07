@@ -8,7 +8,15 @@ app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
-    res.send("hello world");
-  });
+    return res.render("index");
+});
 
-  module.exports = app;
+app.get("/signup", (req, res) => {
+  return res.render("signup");
+})
+
+app.get("/signin", (req, res) => {
+  return res.render("signin");
+})
+
+module.exports = app;
