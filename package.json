@@ -6,7 +6,9 @@
   "scripts": {
     "test": "NODE_ENV=test jest --detectOpenHandles",
     "prepare": "husky install",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "start:prod": "nodemon index.js",
+    "pretest": "NODE_ENV=test npx sequelize-cli db:drop && NODE_ENV=test npx sequelize-cli db:create"
   },
   "author": "Ankit Rawat",
   "license": "ISC",
@@ -26,7 +28,8 @@
     "passport-local": "^1.0.0",
     "pg": "^8.10.0",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.29.1"
+    "sequelize": "^6.29.1",
+    "supertest": "^6.3.3"
   },
   "devDependencies": {
     "eslint": "^8.35.0",
