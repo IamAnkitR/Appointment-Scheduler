@@ -9,6 +9,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <body class="bg-white text-black text-center">
     <div class="flex justify-center">
@@ -28,7 +29,7 @@
       </div>
     </div>
     <div class="pt-6">
-      <p class="font-bold text-2xl underline">Your Appointments</p>
+      <p class="font-bold text-2xl">Book An Appointment</p>
     </div>
     <br>
     <hr>
@@ -77,10 +78,28 @@
               </div>
           </div>
           <hr>
-          <div>
-            <% for(var i = 0; i < appointmentList.length; i++) { %>
-              <%= appointmentList[i].title %> <%= appointmentList[i].start %> <%= appointmentList[i].end %>
+          <div class="pt-6">
+            <p class="font-bold text-2xl">Previous Appointments</p>
+          </div>
+          <div class="flex justify-center">
+            <table class="p-2">
+              <tr>
+                <th class="p-4">Appointment</th>
+                <th class="p-4">Start</th>
+                <th class="p-4">End</th>
+                <th class="p-4">Edit</th>
+                <th class="p-4">Delete</th>
+              </tr>
+              <% for(var i = 0; i < appointmentList.length; i++) { %>
+                <tr class="text-center">
+                  <td><%= appointmentList[i].title %></td>
+                  <td><%= appointmentList[i].start %></td>
+                  <td><%= appointmentList[i].end %></td> 
+                  <td><i class="fa fa-edit"></i></td>
+                  <td><i class="fa fa-trash"></i></td>
+                </tr>
               <% } %>
+            </table>
           </div>
         </form>
     </div>
