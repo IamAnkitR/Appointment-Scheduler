@@ -11,17 +11,25 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Appointment.belongsTo(models.Admin, {
+        foreignKey: "adminId",
+      });
     }
-    static addAppointment({ title, start, end, userId }) {
+    static addAppointment({ title, start, end, adminId }) {
       return this.create({
         title: title,
         start: start,
         end: end,
-        userId,
+        adminId,
       });
     }
-    static getAppointments() {
-      return this.findAll();
+    static getAppointments(adminId) {
+      return this.findAll({
+        where: {
+          adminId,
+        },
+        order: [["id", "ASC"]],
+      });
     }
   }
   Appointment.init({

@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+        Admin.hasMany(models.Appointment, {
+          foreignKey: "adminId",
+        });
     }
     static createUser(name, email, password) {
       return this.create({

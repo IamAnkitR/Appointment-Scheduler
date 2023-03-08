@@ -15,18 +15,19 @@
     <div class="flex justify-center">
       <%- include('header') %>
       </div>
-        <div class="text-center text-xl font-semibold">
-          Welcome, <%=userName%>
-        </div>
+       
 
     <div class="flex justify-center p-4">
-      <div class="flex flex-col justify-center md:w-2/5 w-full">
+      <div class="w-full">
         <a
-        class="text-red-500 hover:bg-red-200 transition duration-200 border-2 border-red-500 p-2 rounded-lg font-bold"
+        class="text-red-500 hover:bg-red-200 transition duration-200 border-2 border-red-500 p-1 rounded-lg font-bold"
         href="/signout"
         >Sign Out</a
       >   
       </div>
+    </div>
+    <div class="text-center text-xl font-semibold">
+      Welcome, <%=userName%>
     </div>
     <div class="pt-6">
       <p class="font-bold text-2xl">Book An Appointment</p>

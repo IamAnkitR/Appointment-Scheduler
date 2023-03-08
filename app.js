@@ -120,14 +120,14 @@ app.get(
     const loggedInUser = req.user.id;
     const user = await Admin.findByPk(loggedInUser);
     const userName = user.dataValues.name;
-    const appointmentList = await Appointment.getAppointments();
+    const appointmentList = await Appointment.getAppointments(loggedInUser);
     if (req.accepts("html")) {
       res.render("home", {
         userName,
         appointmentList,
       });
     } else {
-      res.json({ userName });
+      res.json({ userName,appointmentList });
     }
   }
 );
@@ -186,7 +186,7 @@ app.post(
         title: req.body.title,
         start: req.body.start,
         end: req.body.end,
-        userId: req.user.id,
+        adminId: req.user.id,
       });
       res.redirect("/appointment");
     } catch (error) {
@@ -195,5 +195,15 @@ app.post(
     }
   }
 );
+
+app.get("/appointments/:id", async function (req, res) {
+  try {
+    const appointment = await Appointment.findByPk(req.params.id);
+    return res.json(appointment);
+  } catch (error) {
+    console.log(error);
+    return res.status(422).json(error);
+  }
+});
 
 module.exports = app;
