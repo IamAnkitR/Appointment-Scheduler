@@ -4,7 +4,7 @@ const express = require("express");
 const app = express();
 const path = require("path");
 
-const { Admin } = require("./models");
+const { Admin, Appointment } = require("./models");
 const bcrypt = require("bcrypt");
 var cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
@@ -85,7 +85,13 @@ passport.deserializeUser((id, done) => {
 
 
 app.get("/", (req, res) => {
-    res.render("index");
+  if (req.user) {
+    return res.redirect("/appointment");
+  } else {
+    return res.render("index", {
+      title: "Application Scheduler"
+    });
+  }
 });
 
 app.get("/signup", (req, res) => {
@@ -107,6 +113,25 @@ app.get(
   }
 );
 
+app.get(
+  "/appointment",
+  connectEnsureLogin.ensureLoggedIn(),
+  async (req, res) => {
+    const loggedInUser = req.user.id;
+    const user = await Admin.findByPk(loggedInUser);
+    const userName = user.dataValues.name;
+    const appointmentList = await Appointment.getAppointments();
+    if (req.accepts("html")) {
+      res.render("home", {
+        userName,
+        appointmentList,
+      });
+    } else {
+      res.json({ userName });
+    }
+  }
+);
+
 app.post("/users", async (req, res) => {
   const hashpwd = await bcrypt.hash(req.body.password, saltRounds);
   try {
@@ -121,7 +146,7 @@ app.post("/users", async (req, res) => {
         res.redirect("/");
       } else {
         req.flash("success", "Sign up successful");
-        res.redirect("/index");
+        res.redirect("/appointment");
       }
     });
   } catch (error) {
@@ -148,7 +173,26 @@ app.post(
   }),
   function (req, res) {
     console.log(req.user);
-    res.redirect("/index");
+    res.redirect("/appointment");
+  }
+);
+
+app.post(
+  "/appointments",
+  connectEnsureLogin.ensureLoggedIn(),
+  async (req, res) => {
+    try {
+      await Appointment.addAppointment({
+        title: req.body.title,
+        start: req.body.start,
+        end: req.body.end,
+        userId: req.user.id,
+      });
+      res.redirect("/appointment");
+    } catch (error) {
+      console.log(error);
+      return res.status(422).json(error);
+    }
   }
 );
 
