@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>
+        Appointment Scheduler | Edit
+    </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+  </head>
+  <body>
+    <div class="flex justify-center">
+      <%- include('header') %>
+    </div>
+    <div class="text-center text-xl font-semibold pt-4">
+        Hey, <%=userName%>
+    </div>  
+    <div class="font-bold text-center pt-2">
+      <h1>Edit Appointment Title</h1>
+    </div>
+    <div class="grid grid-cols-6 pt-6">
+        <div class="col-start-3 col-span-2">
+          
+          <form action="/appointments/<%=appointment.id%>/edit" method="post">
+        <div class="py-3">
+           <label class="text-center">Enter the new Title</label>
+           <input type="text" name="title" value="<%= appointment.title %>" class="border border-gray-300 text-gray-900 rounded p-2 w-full">
+        </div>  
+        <div class="py-3 text-center"> 
+           <button type="submit" class="bg-inherit transition duration-200 border-2 border-black p-2 rounded-lg hover:bg-teal-300 px-6">Submit</button>        
+        </div>  
+        </form>
+        </div>
+    </div>
+  </body>
+</html>

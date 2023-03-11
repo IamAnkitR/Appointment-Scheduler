@@ -206,4 +206,54 @@ app.get("/appointments/:id", async function (req, res) {
   }
 });
 
+app.delete(
+  "/appointments/:id/delete",
+  connectEnsureLogin.ensureLoggedIn(),
+  async (req, res) => {
+    try {
+      const response = await Appointment.deleteAppointment(req.params.id);
+      return res.json({ success: response === 1 });
+    } catch (error) {
+      console.log(error);
+      return res.status(422).json(error);
+    }
+  }
+);
+
+app.get(
+  "/appointments/:id/edit",
+  connectEnsureLogin.ensureLoggedIn(),
+  async (req, res) => {
+    const loggedInUser = req.user.id;
+    const user = await Admin.findByPk(loggedInUser);
+    const userName = user.dataValues.name;
+    const appointment = await Appointment.findByPk(req.params.id);
+    console.log(appointment);
+    res.render("edit", {
+      userName : userName,
+      appointment: appointment,
+      id: req.params.id,
+    });
+  }
+);
+
+
+app.post(
+  "/appointments/:id/edit",
+  connectEnsureLogin.ensureLoggedIn(),
+  async (req, res) => {
+    try {
+      const appointment = await Appointment.findByPk(req.params.id);
+      await Appointment.editAppointment({
+        id:appointment.id,
+        title:req.body.title,
+      });
+      res.redirect("/appointment");
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+  }
+);
+
 module.exports = app;

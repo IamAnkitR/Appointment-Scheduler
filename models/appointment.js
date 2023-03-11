@@ -28,8 +28,25 @@ module.exports = (sequelize, DataTypes) => {
         where: {
           adminId,
         },
-        order: [["id", "ASC"]],
+        order: [["start", "ASC"]],
       });
+    }
+    static deleteAppointment(id) {
+      return this.destroy({
+        where: {
+          id,
+        },
+      });
+    }
+    static editAppointment({id, title}) {
+      return this.update(
+        { title: title },
+        {
+          where: {
+            id,
+          },
+        }
+      );
     }
   }
   Appointment.init({

@@ -10,7 +10,20 @@
       referrerpolicy="no-referrer"
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script>
+      function deleteAppointment(id) {
+          fetch(`/appointments/${id}/delete`, {
+              method: "delete",
+              headers: {"Content-Type":"application/json"},
+          }).then((res)=>{
+              if (res.ok) {
+                  window.location.reload();
+              }
+          }).catch((err)=> console.error(err))
+      }
+  </script>
   </head>
+  
   <body class="bg-white text-black text-center">
     <div class="flex justify-center">
       <%- include('header') %>
@@ -96,8 +109,8 @@
                   <td><%= appointmentList[i].title %></td>
                   <td><%= appointmentList[i].start %></td>
                   <td><%= appointmentList[i].end %></td> 
-                  <td><i class="fa fa-edit"></i></td>
-                  <td><i class="fa fa-trash"></i></td>
+                  <td><a href="/appointments/<%=appointmentList[i].id%>/edit"><i class="fa fa-edit"></i></a></td>
+                  <td><button onclick="deleteAppointment(<%=appointmentList[i].id%>)"><i class="fa fa-trash cursor-pointer"></i></button></td>
                 </tr>
               <% } %>
             </table>
