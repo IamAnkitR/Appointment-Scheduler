@@ -10,7 +10,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
   </head>
-  <body>
+  <body class="bg-slate-700 text-neutral-50 text-center">
     <div class="flex justify-center">
       <%- include('header') %>
     </div>
@@ -26,10 +26,11 @@
           <form action="/appointments/<%=appointment.id%>/edit" method="post">
         <div class="py-3">
            <label class="text-center">Enter the new Title</label>
-           <input type="text" name="title" value="<%= appointment.title %>" class="border border-gray-300 text-gray-900 rounded p-2 w-full">
-        </div>  
-        <div class="py-3 text-center"> 
-           <button type="submit" class="bg-inherit transition duration-200 border-2 border-black p-2 rounded-lg hover:bg-teal-300 px-6">Submit</button>        
+           <input type="text" name="title" value="<%= appointment.title %>" class="border border-gray-300 text-gray-300 bg-inherit rounded p-2 w-full">
+        </div>   
+        <div class="py-3 text-center">
+           <button type="submit" class="bg-inherit transition duration-200 border-2 border-black p-2 rounded-lg hover:bg-teal-800 px-6">Submit</button> 
+           <a href="/appointment" class="bg-inherit transition duration-200 border-2 border-black p-2 rounded-lg hover:bg-red-500 px-6">Cancel</a>       
         </div>  
         </form>
         </div>
