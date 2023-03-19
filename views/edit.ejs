@@ -26,7 +26,7 @@
           <form action="/appointments/<%=appointment.id%>/edit" method="post">
         <div class="py-3">
            <label class="text-center">Enter the new Title</label>
-           <input type="text" name="title" value="<%= appointment.title %>" class="border border-gray-300 text-gray-300 bg-inherit rounded p-2 w-full">
+           <input type="text" name="title" value="<%= appointment.title %>" class="border border-gray-300 text-gray-300 bg-inherit rounded p-2 w-full" required>
         </div>   
         <div class="py-3 text-center">
            <button type="submit" class="bg-inherit transition duration-200 border-2 border-black p-2 rounded-lg hover:bg-teal-800 px-6">Submit</button> 

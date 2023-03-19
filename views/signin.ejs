@@ -15,6 +15,11 @@
       </div><br>
       <div class="flex flex-col justify-center md:w-1/5 w-full">
         <h1 class="text-2xl flex justify-center font-semibold">Sign-in here</h1>
+        <% if(messages && messages.error && messages.error.length > 0)  { %>
+          <% for(var i=0; i<messages.error.length; i++) { %>
+            <p class="bg-red-600 my-3 list-none rounded px-4 py-2"><%= messages.error[i] %></p>
+          <% } %>
+        <% } %>
         <form action="/session" method="post" class="flex flex-col gap-4 pt-6">
           <div class="flex flex-col">
             <label for="email">Email</label>
@@ -41,6 +46,7 @@
             Sign In
           </button>
         </form>
+       
       </div>
     </div>
   </body>

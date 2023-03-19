@@ -13,6 +13,7 @@ const session = require("express-session");
 const localStrategy = require("passport-local");
 const passport = require("passport");
 const flash = require("connect-flash");
+const { exit } = require("process");
 
 const saltRounds = 10;
 
@@ -95,11 +96,11 @@ app.get("/", (req, res) => {
 });
 
 app.get("/signup", (req, res) => {
-    res.render("signup");
+  res.render("signup");
 })
 
 app.get("/signin", (req, res) => {
-    res.render("signin");
+  res.render("signin");
 })
 
 app.get(
@@ -113,26 +114,20 @@ app.get(
   }
 );
 
-app.get(
-  "/appointment",
-  connectEnsureLogin.ensureLoggedIn(),
-  async (req, res) => {
-    const loggedInUser = req.user.id;
-    const user = await Admin.findByPk(loggedInUser);
-    const userName = user.dataValues.name;
-    const appointmentList = await Appointment.getAppointments(loggedInUser);
-    if (req.accepts("html")) {
-      res.render("home", {
-        userName,
-        appointmentList,
-      });
-    } else {
-      res.json({ userName,appointmentList });
-    }
-  }
-);
-
 app.post("/users", async (req, res) => {
+  if (req.body.email.length == 0) {
+    req.flash("error", "Email can not be empty!");
+    return res.redirect("/signup");
+  }
+
+  if (req.body.name.length == 0) {
+    req.flash("error", "Name can not be empty!");
+    return res.redirect("/signup");
+  }
+  if (req.body.password.length < 8) {
+    req.flash("error", "Enter a strong password with length 8 or more");
+    return res.redirect("/signup");
+  }
   const hashpwd = await bcrypt.hash(req.body.password, saltRounds);
   try {
     const user = await Admin.create({
@@ -150,7 +145,7 @@ app.post("/users", async (req, res) => {
       }
     });
   } catch (error) {
-    req.flash("error", error.message);
+    req.flash("error", "This email is already registered");
     return res.redirect("/signup");
   }
 });
@@ -177,11 +172,43 @@ app.post(
   }
 );
 
+let startArray = [];
+let endArray = [];
+app.get(
+  "/appointment",
+  connectEnsureLogin.ensureLoggedIn(),
+  async (req, res) => {
+    const loggedInUser = req.user.id;
+    const user = await Admin.findByPk(loggedInUser);
+    const userName = user.dataValues.name;
+    const appointmentList = await Appointment.getAppointments(loggedInUser);
+    for (let i = 0; i < appointmentList.length; i++) {
+      startArray.push(appointmentList[i].start);
+      endArray.push(appointmentList[i].end);
+    }
+
+    if (req.accepts("html")) {
+      res.render("home", {
+        userName,
+        appointmentList,
+      });
+    } else {
+      res.json({ userName, appointmentList });
+    }
+  }
+);
+
+
+
 app.post(
   "/appointments",
   connectEnsureLogin.ensureLoggedIn(),
   async (req, res) => {
+    let startTime = req.body.start;
+    let endTime = req.body.end;
+   
     try {
+      
       await Appointment.addAppointment({
         title: req.body.title,
         start: req.body.start,
@@ -230,7 +257,7 @@ app.get(
     const appointment = await Appointment.findByPk(req.params.id);
     console.log(appointment);
     res.render("edit", {
-      userName : userName,
+      userName: userName,
       appointment: appointment,
       id: req.params.id,
     });
@@ -245,8 +272,8 @@ app.post(
     try {
       const appointment = await Appointment.findByPk(req.params.id);
       await Appointment.editAppointment({
-        id:appointment.id,
-        title:req.body.title,
+        id: appointment.id,
+        title: req.body.title,
       });
       res.redirect("/appointment");
     } catch (error) {
