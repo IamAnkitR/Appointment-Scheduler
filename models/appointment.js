@@ -15,9 +15,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "adminId",
       });
     }
-    static addAppointment({ title, start, end, adminId }) {
+    static addAppointment({ title, date, start, end, adminId }) {
       return this.create({
         title: title,
+        date:date,
         start: start,
         end: end,
         adminId,
@@ -51,6 +52,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Appointment.init({
     title: DataTypes.STRING,
+    date: DataTypes.DATEONLY,
     start: DataTypes.TIME,
     end: DataTypes.TIME
   }, {

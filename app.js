@@ -211,6 +211,7 @@ app.post(
       
       await Appointment.addAppointment({
         title: req.body.title,
+        date: req.body.date,
         start: req.body.start,
         end: req.body.end,
         adminId: req.user.id,
